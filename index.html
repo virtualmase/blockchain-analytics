@@ -1,197 +1,244 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlockchainAnalytics.space | AI Agent Intelligence</title>
+    <title>BLOCKCHAIN_ANALYTICS // V4.0_STABLE</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --glass: rgba(15, 23, 42, 0.6);
-            --border: rgba(255, 255, 255, 0.1);
+            --bg: #050505;
+            --primary: #ffffff;
+            --accent: #3b82f6;
+            --border: #1a1a1a;
         }
-        body { 
-            background: radial-gradient(circle at top right, #1e293b, #020617);
-            color: #f8fafc;
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
+        body {
+            background-color: var(--bg);
+            color: var(--primary);
+            font-family: 'Roboto Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
-        .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(16px);
+        .terminal-border {
             border: 1px solid var(--border);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
         }
-        .ai-glow {
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
-            transition: all 0.3s ease;
+        .terminal-input {
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--accent);
         }
-        .ai-glow:focus-within {
-            box-shadow: 0 0 40px rgba(59, 130, 246, 0.6);
-            border-color: #60a5fa;
+        .glow-accent {
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
         }
-        /* Anti-grid organic movement */
-        .blob {
-            position: absolute;
-            width: 500px;
-            height: 500px;
-            background: linear-gradient(135deg, #3b82f6 0%, #a855f7 100%);
-            filter: blur(80px);
-            opacity: 0.15;
-            z-index: -1;
-            animation: move 20s infinite alternate;
+        /* Custom scrollbar to match OS look */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; }
+        
+        .status-dot {
+            height: 8px;
+            width: 8px;
+            background-color: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            box-shadow: 0 0 8px #22c55e;
         }
-        @keyframes move {
-            from { transform: translate(-10%, -10%); }
-            to { transform: translate(20%, 20%); }
+        .label-tag {
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border: 1px solid #333;
+            color: #666;
         }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="p-4 md:p-8">
 
-    <div class="blob"></div>
-
-    <nav class="sticky top-0 z-50 glass-card mx-4 mt-4 rounded-2xl px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center space-x-2">
-            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold italic">B</div>
-            <span class="text-xl font-extrabold tracking-tight">BlockchainAnalytics<span class="text-blue-500">.space</span></span>
-        </div>
-        <div class="hidden md:flex space-x-6 text-sm font-semibold text-gray-300">
-            <a href="#" class="hover:text-white transition">Network Intelligence</a>
-            <a href="#" class="hover:text-white transition">Whale Clusters</a>
-            <a href="#" class="hover:text-white transition">API Docs</a>
-        </div>
-        <div class="flex items-center space-x-4">
-            <button class="text-xs font-bold text-blue-400 bg-blue-400/10 px-3 py-1 rounded-full border border-blue-400/20">AGENT ACTIVE</button>
-            <button class="bg-blue-600 hover:bg-blue-500 px-5 py-2 rounded-xl text-sm font-bold transition-all transform hover:scale-105">Connect Identity</button>
-        </div>
-    </nav>
-
-    <header class="max-w-5xl mx-auto pt-24 pb-12 px-6 text-center">
-        <h1 class="text-6xl md:text-7xl font-extrabold tracking-tighter mb-6 bg-clip-text text-transparent bg-gradient-to-b from-white to-gray-500">
-            Analytics, but <span class="italic text-blue-500">Conversational.</span>
-        </h1>
-        <p class="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
-            Query 40+ chains using natural language. No SQL. No complex filters. Just on-chain truth delivered by AI.
-        </p>
-
-        <div class="max-w-3xl mx-auto glass-card rounded-3xl p-2 ai-glow border-2 border-transparent">
-            <div class="flex items-center px-4 py-3">
-                <i class="fa-solid fa-wand-magic-sparkles text-blue-400 text-xl mr-4"></i>
-                <input type="text" id="ai-input" placeholder="Ask about whale movements, rug-pull risks, or cross-chain flows..." 
-                    class="bg-transparent w-full text-lg md:text-xl outline-none placeholder:text-gray-600">
-                <button onclick="simulateSearch()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-3 rounded-2xl transition shadow-lg">
-                    Query
-                </button>
-            </div>
+    <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
+        <div>
+            <h1 class="text-xl font-bold tracking-tighter">
+                BLOCKCHAIN_ANALYTICS<span class="text-blue-500">_INTEL</span>
+            </h1>
+            <p class="text-[10px] text-gray-500 mt-1">CORE_VERSION: 4.0.2 // ARCH: DECENTRALIZED_NODES</p>
         </div>
         
-        <div class="mt-6 flex justify-center space-x-4 text-xs font-bold text-gray-500 uppercase tracking-widest">
-            <span>Try:</span>
-            <button class="hover:text-blue-400 transition" onclick="setQuery('Show me wallets with 100% win rate on Base')">#TopTraders</button>
-            <button class="hover:text-blue-400 transition" onclick="setQuery('Trace funds from the latest bridge exploit')">#Forensics</button>
-            <button class="hover:text-blue-400 transition" onclick="setQuery('List top tokens bought by smart money in 1h')">#SmartMoney</button>
+        <nav class="flex flex-wrap gap-4 text-xs font-bold border-l border-gray-800 pl-4">
+            <a href="#" class="text-blue-500">[[00] DASHBOARD]</a>
+            <a href="#" class="hover:text-blue-400">[[01] WHALE_TRACKER]</a>
+            <a href="#" class="hover:text-blue-400">[[02] NODE_REPORTS]</a>
+            <a href="#" class="text-yellow-500 hover:glow-accent transition">[[FOUNDER_STATUS]]</a>
+        </nav>
+
+        <div class="text-[10px] text-right text-gray-400 hidden lg:block">
+            SYSTEM_TIME: <span id="clock">00:00:00</span><br>
+            LATENCY: 4.02ms // STATUS: <span class="text-green-500">OPERATIONAL</span>
         </div>
     </header>
 
-    <section class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-6 mb-20">
+    <main class="max-w-7xl mx-auto space-y-6">
         
-        <div class="lg:col-span-4 glass-card rounded-3xl p-6 h-[500px] flex flex-col">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="font-bold flex items-center">
-                    <span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
-                    Agent Activity
-                </h3>
-                <span class="text-xs text-gray-500 font-mono">Real-time</span>
+        <section class="terminal-border p-6 bg-[#0a0a0a]">
+            <div class="mb-2 flex justify-between items-center">
+                <span class="text-[10px] text-gray-600 font-bold tracking-widest">// DEPLOYING_QUERY_PROTOCOLS</span>
+                <span class="label-tag">AI_ENGINE_READY</span>
             </div>
-            <div id="feed" class="flex-1 overflow-y-auto space-y-4 text-sm font-mono scrollbar-hide">
-                <div class="text-blue-400">[SCAN] Identifying new liquidity pair on Arbitrum...</div>
-                <div class="text-gray-500">[LABEL] Wallet 0x4f... linked to Jump Trading.</div>
-                <div class="text-yellow-500">[ALERT] Massive $USDC inflow to Binance detected.</div>
+            <div class="flex items-center gap-4 group">
+                <span class="text-blue-500 font-bold text-lg">BA_CMD:></span>
+                <input type="text" id="ai-input" 
+                       placeholder="EXECUTE_NATURAL_LANGUAGE_QUERY..." 
+                       class="terminal-input w-full text-lg placeholder:text-gray-800"
+                       onfocus="this.placeholder=''" onblur="this.placeholder='EXECUTE_NATURAL_LANGUAGE_QUERY...'">
+                <button onclick="simulateSearch()" class="border border-blue-500 px-6 py-2 text-xs font-bold text-blue-500 hover:bg-blue-500 hover:text-white transition-all">
+                    EXECUTE
+                </button>
             </div>
-        </div>
+        </section>
 
-        <div class="lg:col-span-8 glass-card rounded-3xl p-8">
-            <div class="flex justify-between items-center mb-8">
-                <div>
-                    <h3 class="text-xl font-bold">Network Concentration</h3>
-                    <p class="text-sm text-gray-500">Asset flows across Layer 1s and Layer 2s</p>
-                </div>
-                <div class="flex bg-slate-800 rounded-xl p-1 text-xs font-bold">
-                    <button class="bg-slate-700 px-4 py-2 rounded-lg">Volumes</button>
-                    <button class="px-4 py-2 hover:bg-slate-700 transition rounded-lg">Social Sentiment</button>
-                </div>
-            </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            <div class="h-64 flex items-end justify-between gap-2 px-2 border-b border-gray-800">
-                <div class="w-full bg-blue-500/20 border-t-2 border-blue-500 h-4/5 rounded-t-lg relative group">
-                    <div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition text-xs font-bold">ETH</div>
+            <aside class="lg:col-span-4 space-y-6">
+                <div class="terminal-border p-4 bg-[#0a0a0a] h-[400px] flex flex-col">
+                    <div class="flex justify-between items-center border-b border-gray-900 pb-2 mb-4">
+                        <span class="text-[10px] font-bold">LIVE_TELEMETRY</span>
+                        <div class="status-dot"></div>
+                    </div>
+                    <div id="feed" class="text-[10px] font-mono space-y-2 overflow-y-auto">
+                        <div class="text-gray-500">[INIT] DATA_NODE_SYNC... COMPLETE</div>
+                        <div class="text-blue-400">[SCAN] IDENTIFYING_WHALE_FLOWS (ETH_MAINNET)</div>
+                        <div class="text-white">> 0x4f...21 MOVED 4,200 ETH TO COINBASE</div>
+                        <div class="text-red-500">[ALERT] HIGH_VOLATILITY_DETECTED: $PEPE</div>
+                    </div>
                 </div>
-                <div class="w-full bg-purple-500/20 border-t-2 border-purple-500 h-2/3 rounded-t-lg relative group">
-                     <div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition text-xs font-bold">SOL</div>
-                </div>
-                <div class="w-full bg-blue-400/20 border-t-2 border-blue-400 h-full rounded-t-lg relative group">
-                     <div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition text-xs font-bold">BASE</div>
-                </div>
-                <div class="w-full bg-slate-500/20 border-t-2 border-slate-500 h-1/2 rounded-t-lg relative group">
-                     <div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition text-xs font-bold">OP</div>
-                </div>
-            </div>
-            <div class="flex justify-between mt-4 text-[10px] font-bold text-gray-600 uppercase tracking-widest">
-                <span>Ethereum</span>
-                <span>Solana</span>
-                <span>Base (L2)</span>
-                <span>Optimism</span>
-            </div>
-        </div>
 
-    </section>
+                <div class="terminal-border p-4 bg-blue-500/5">
+                    <h4 class="text-xs font-bold mb-2 text-blue-400">// NETWORK_HEALTH</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-[10px]">
+                            <span>ETH_INDEX_LOAD</span>
+                            <span class="text-blue-500">68%</span>
+                        </div>
+                        <div class="w-full bg-gray-900 h-1">
+                            <div class="bg-blue-500 h-1" style="width: 68%"></div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
 
-    <footer class="max-w-7xl mx-auto px-6 py-12 border-t border-gray-900 flex flex-col md:flex-row justify-between items-center text-gray-600 text-xs">
-        <p>© 2026 BlockchainAnalytics.space. Data indexed via decentralized nodes.</p>
-        <div class="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" class="hover:text-blue-500 transition">Network Status</a>
-            <a href="#" class="hover:text-blue-500 transition">Privacy (ZK-Compliant)</a>
-            <a href="#" class="hover:text-blue-500 transition">Twitter</a>
+            <section class="lg:col-span-8 terminal-border p-6 bg-[#0a0a0a]">
+                <div class="flex justify-between items-center mb-8 border-b border-gray-900 pb-4">
+                    <div>
+                        <h2 class="text-lg font-bold">CORE_ANALYSIS_ARRAY</h2>
+                        <p class="text-[10px] text-gray-600 uppercase">Cross-chain data visualization // Node: Global</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="label-tag hover:text-white border-blue-900 text-blue-400">SAVE_JSON</button>
+                        <button class="label-tag hover:text-white">REFRESH_NODE</button>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="grid grid-cols-4 text-[10px] text-gray-600 font-bold mb-2 uppercase tracking-widest">
+                        <span>Identifier</span>
+                        <span>Weight</span>
+                        <span>Momentum</span>
+                        <span class="text-right">Risk_Score</span>
+                    </div>
+                    
+                    <div class="group border-b border-gray-900 py-3 hover:bg-white/5 transition px-2">
+                        <div class="grid grid-cols-4 items-center">
+                            <span class="text-xs font-bold">PROTO_BTC</span>
+                            <span class="text-xs">42.85G</span>
+                            <span class="text-xs text-green-500">+4.2% ↑</span>
+                            <div class="text-right">
+                                <span class="bg-green-500/10 text-green-500 px-2 py-1 text-[9px] border border-green-500/20">LOW</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="group border-b border-gray-900 py-3 hover:bg-white/5 transition px-2">
+                        <div class="grid grid-cols-4 items-center">
+                            <span class="text-xs font-bold">PROTO_SOL</span>
+                            <span class="text-xs">12.11G</span>
+                            <span class="text-xs text-red-500">-1.8% ↓</span>
+                            <div class="text-right">
+                                <span class="bg-yellow-500/10 text-yellow-500 px-2 py-1 text-[9px] border border-yellow-500/20">MODERATE</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="group border-b border-gray-900 py-3 hover:bg-white/5 transition px-2">
+                        <div class="grid grid-cols-4 items-center">
+                            <span class="text-xs font-bold">AGENT_X_WHALE</span>
+                            <span class="text-xs">9.04G</span>
+                            <span class="text-xs text-blue-500">STABLE</span>
+                            <div class="text-right">
+                                <span class="bg-blue-500/10 text-blue-400 px-2 py-1 text-[9px] border border-blue-400/20">SECURE</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-12 p-4 border-t border-gray-900 flex justify-between">
+                    <div class="text-[9px] text-gray-600">
+                        AUTH_STATE: <span class="text-gray-400">GUEST_USER_092</span><br>
+                        PERMISSIONS: <span class="text-gray-400">READ_ONLY</span>
+                    </div>
+                    <button class="bg-white text-black px-4 py-2 text-[10px] font-bold hover:bg-blue-500 hover:text-white transition">
+                        UPGRADE_TO_FOUNDER_LEVEL
+                    </button>
+                </div>
+            </section>
         </div>
+    </main>
+
+    <footer class="mt-12 pt-8 border-t border-gray-900 text-[9px] text-gray-600 flex flex-col md:flex-row justify-between items-center uppercase tracking-[0.2em] gap-4">
+        <div>© 2026 BLOCKCHAIN_ANALYTICS // ALL_SYSTEMS_GO</div>
+        <div class="flex gap-8">
+            <a href="#" class="hover:text-white transition">X_PROTO</a>
+            <a href="#" class="hover:text-white transition">DISC_CORE</a>
+            <a href="#" class="hover:text-white transition">GITHUB_REVERSE</a>
+        </div>
+        <div>LOC: IRVINE_CA // 33.6846° N, 117.8265° W</div>
     </footer>
 
     <script>
-        function setQuery(text) {
-            document.getElementById('ai-input').value = text;
+        // Update System Clock
+        function updateClock() {
+            const now = new Date();
+            const time = now.getHours().toString().padStart(2, '0') + ":" + 
+                         now.getMinutes().toString().padStart(2, '0') + ":" + 
+                         now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('clock').innerText = time;
         }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Simulate Live Data Feed
+        const feed = document.getElementById('feed');
+        const logEntries = [
+            "[INFO] SYNCING_BLOCK_#194827...",
+            "[WARN] ANOMALY_DETECTED_IN_CLUSTER_C4",
+            "[SUCCESS] PROTOCOL_SCAN_COMPLETE",
+            "[DATA] NEW_WALLET_LABELED: 'KRAKEN_HOT_2'",
+            "[CMD] EXECUTING_WHALE_TRACE..."
+        ];
+
+        setInterval(() => {
+            const entry = document.createElement('div');
+            entry.className = "text-gray-600 opacity-0 transition-opacity duration-300";
+            entry.innerText = logEntries[Math.floor(Math.random() * logEntries.length)];
+            feed.prepend(entry);
+            setTimeout(() => entry.classList.remove('opacity-0'), 50);
+            if (feed.children.length > 20) feed.lastChild.remove();
+        }, 2500);
 
         function simulateSearch() {
-            const input = document.getElementById('ai-input');
-            if(!input.value) return;
-            const btn = document.querySelector('button[onclick="simulateSearch()"]');
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch animate-spin"></i> Analyzing...';
-            setTimeout(() => {
-                btn.innerHTML = 'Query';
-                alert("AI Engine is processing your query across 42 chains. Upgrade to Founder Status for instant results.");
-            }, 1500);
+            const val = document.getElementById('ai-input').value;
+            if(!val) return;
+            alert("COMMAND_EXECUTED: Analyzing " + val + "... Access the full terminal result by connecting your Founder Key.");
         }
-
-        // Simple Live Feed simulation
-        const feed = document.getElementById('feed');
-        const msgs = [
-            "[NEW] MEV bot identified on Solana: 0x88...f2",
-            "[ALERT] Protocol 'Nexus' TVL increased by 140% in 10m",
-            "[FLOW] 50,000 ETH moved from Kraken to private wallet",
-            "[SCAN] No vulnerability found in Contract: 0x9a...32",
-            "[SMART] Wallet group 'Alpha-7' entered $PEPE position"
-        ];
-        setInterval(() => {
-            const msg = document.createElement('div');
-            msg.className = "text-gray-400 opacity-0 transition-opacity duration-500";
-            msg.innerText = msgs[Math.floor(Math.random() * msgs.length)];
-            feed.prepend(msg);
-            setTimeout(() => msg.classList.remove('opacity-0'), 100);
-            if(feed.children.length > 15) feed.lastChild.remove();
-        }, 3000);
     </script>
 </body>
 </html>
