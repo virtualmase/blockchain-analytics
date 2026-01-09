@@ -6,6 +6,8 @@
     <title>BLOCKCHAIN_ANALYTICS // V4.0_STABLE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
     <style>
         :root {
             --bg: #050505;
@@ -19,225 +21,274 @@
             font-family: 'Roboto Mono', monospace;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            overflow-x: hidden;
         }
-        .terminal-border {
-            border: 1px solid var(--border);
-        }
-        .terminal-input {
-            background: transparent;
-            border: none;
-            outline: none;
-            color: var(--accent);
-        }
-        .glow-accent {
-            box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
-        }
-        /* Custom scrollbar to match OS look */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #333; }
+        .terminal-border { border: 1px solid var(--border); }
+        .terminal-input { background: transparent; border: none; outline: none; color: var(--accent); }
+        
+        /* Kinetic UI Elements */
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .animate-scroll { animation: scroll 30s linear infinite; }
         
         .status-dot {
-            height: 8px;
-            width: 8px;
-            background-color: #22c55e;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
+            height: 6px; width: 6px; background-color: #22c55e;
+            border-radius: 50%; display: inline-block;
             box-shadow: 0 0 8px #22c55e;
         }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #1a1a1a; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+
         .label-tag {
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border: 1px solid #333;
-            color: #666;
+            font-size: 0.65rem; padding: 2px 6px;
+            border: 1px solid #1a1a1a; color: #444;
         }
+        
+        .scanline {
+            width: 100%; height: 100px; z-index: 10;
+            background: linear-gradient(0deg, rgba(0,0,0,0) 0%, rgba(59,130,246,0.05) 50%, rgba(0,0,0,0) 100%);
+            position: absolute; pointer-events: none; animation: scan 4s linear infinite;
+        }
+        @keyframes scan { 0% { top: -100px; } 100% { top: 100%; } }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-2 md:p-6 min-h-screen relative">
+    <div class="scanline"></div>
 
-    <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-4">
+    <header class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4 px-2">
         <div>
-            <h1 class="text-xl font-bold tracking-tighter">
+            <h1 class="text-xl font-bold tracking-tighter flex items-center">
+                <span class="bg-white text-black px-2 mr-2">BA</span>
                 BLOCKCHAIN_ANALYTICS<span class="text-blue-500">_INTEL</span>
             </h1>
-            <p class="text-[10px] text-gray-500 mt-1">CORE_VERSION: 4.0.2 // ARCH: DECENTRALIZED_NODES</p>
+            <p class="text-[9px] text-gray-600 mt-1">LATENCY: 4.02ms // SYS_STATUS: <span class="text-green-500">OPERATIONAL</span></p>
         </div>
         
-        <nav class="flex flex-wrap gap-4 text-xs font-bold border-l border-gray-800 pl-4">
+        <nav class="flex flex-wrap gap-6 text-[11px] font-bold">
             <a href="#" class="text-blue-500">[[00] DASHBOARD]</a>
-            <a href="#" class="hover:text-blue-400">[[01] WHALE_TRACKER]</a>
-            <a href="#" class="hover:text-blue-400">[[02] NODE_REPORTS]</a>
-            <a href="#" class="text-yellow-500 hover:glow-accent transition">[[FOUNDER_STATUS]]</a>
+            <a href="#" class="text-gray-500 hover:text-white transition">[[01] WHALE_TRACKER]</a>
+            <a href="#" class="text-gray-500 hover:text-white transition">[[02] NODE_REPORTS]</a>
+            <a href="#" class="text-yellow-500 border border-yellow-500/20 px-2 py-1 hover:bg-yellow-500/10 transition">[[FOUNDER_STATUS]]</a>
         </nav>
 
-        <div class="text-[10px] text-right text-gray-400 hidden lg:block">
-            SYSTEM_TIME: <span id="clock">00:00:00</span><br>
-            LATENCY: 4.02ms // STATUS: <span class="text-green-500">OPERATIONAL</span>
+        <div class="text-[10px] text-right text-gray-500 font-mono">
+            SYS_TIME: <span id="clock" class="text-white">00:00:00</span><br>
+            NET_INDEX: <span class="text-white">STABLE_4.0</span>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto space-y-6">
-        
-        <section class="terminal-border p-6 bg-[#0a0a0a]">
-            <div class="mb-2 flex justify-between items-center">
-                <span class="text-[10px] text-gray-600 font-bold tracking-widest">// DEPLOYING_QUERY_PROTOCOLS</span>
-                <span class="label-tag">AI_ENGINE_READY</span>
+    <section class="max-w-7xl mx-auto mb-6">
+        <div class="terminal-border bg-[#0a0a0a] p-8">
+            <div class="flex justify-between items-center mb-4">
+                <span class="text-[10px] text-gray-600 tracking-[0.3em] font-bold">// DEPLOY_NLQ_PROTOCOLS</span>
+                <span class="label-tag">AI_ENGINE_V4_LOCKED</span>
             </div>
-            <div class="flex items-center gap-4 group">
-                <span class="text-blue-500 font-bold text-lg">BA_CMD:></span>
-                <input type="text" id="ai-input" 
-                       placeholder="EXECUTE_NATURAL_LANGUAGE_QUERY..." 
-                       class="terminal-input w-full text-lg placeholder:text-gray-800"
-                       onfocus="this.placeholder=''" onblur="this.placeholder='EXECUTE_NATURAL_LANGUAGE_QUERY...'">
-                <button onclick="simulateSearch()" class="border border-blue-500 px-6 py-2 text-xs font-bold text-blue-500 hover:bg-blue-500 hover:text-white transition-all">
-                    EXECUTE
+            <div class="flex flex-col md:flex-row items-center gap-4">
+                <div class="flex items-center gap-3 w-full border-b border-gray-800 focus-within:border-blue-500 transition py-2">
+                    <span class="text-blue-500 font-bold">BA_CMD:></span>
+                    <input type="text" id="ai-input" 
+                           placeholder="EXECUTE_RESEARCH_QUERY..." 
+                           class="terminal-input w-full text-lg placeholder:text-gray-900 tracking-wider">
+                </div>
+                <button onclick="simulateSearch()" class="w-full md:w-auto border border-blue-500 px-10 py-3 text-xs font-bold text-blue-500 hover:bg-blue-500 hover:text-white transition-all shadow-[0_0_15px_rgba(59,130,246,0.1)]">
+                    EXECUTE_QUERY
+                </button>
+            </div>
+            <div class="mt-4 flex gap-4 text-[9px] text-gray-700 font-bold">
+                <span>SUGGESTED:</span>
+                <button class="hover:text-blue-400" onclick="setQuery('WHALE_INFLOW_TO_BASE_24H')">#BASE_WHALES</button>
+                <button class="hover:text-blue-400" onclick="setQuery('TOP_PNL_WALLETS_SOLANA')">#SOL_ALPHA</button>
+                <button class="hover:text-blue-400" onclick="setQuery('DETECT_RUG_RISK_CA_0x42...')">#RISK_AUDIT</button>
+            </div>
+        </div>
+    </section>
+
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <aside class="lg:col-span-4 space-y-6">
+            <div class="terminal-border p-4 bg-[#0a0a0a] h-[550px] flex flex-col relative overflow-hidden">
+                <div class="flex justify-between items-center border-b border-gray-900 pb-3 mb-4">
+                    <span class="text-[10px] font-bold tracking-widest text-gray-400">LIVE_TELEMETRY</span>
+                    <div class="status-dot"></div>
+                </div>
+                <div id="feed" class="text-[10px] font-mono space-y-4 overflow-y-auto scrollbar-hide pr-2">
+                    <div class="text-gray-600">[BOOT] ANALYTICS_AGENT_READY...</div>
+                </div>
+            </div>
+        </aside>
+
+        <section class="lg:col-span-8 terminal-border p-8 bg-[#0a0a0a]">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4 border-b border-gray-900 pb-6">
+                <div>
+                    <h2 class="text-xl font-bold tracking-tight">ANALYSIS_ARRAY</h2>
+                    <p class="text-[10px] text-gray-600">Cross-chain dominance & momentum tracking</p>
+                </div>
+                <div class="flex gap-2">
+                    <button class="label-tag border-gray-800 text-gray-500 hover:text-white transition">EXPORT_CSV</button>
+                    <button class="label-tag border-blue-900 text-blue-500 hover:bg-blue-500/10">REFRESH_SYNC</button>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <div class="grid grid-cols-4 text-[9px] text-gray-600 font-bold tracking-widest uppercase pb-2">
+                    <span>Protocol</span>
+                    <span>Volume_24h</span>
+                    <span>Net_Momentum</span>
+                    <span class="text-right">Risk_Index</span>
+                </div>
+                
+                <div class="group border-b border-gray-900 py-4 hover:bg-white/5 transition-all cursor-crosshair px-2">
+                    <div class="grid grid-cols-4 items-center">
+                        <span class="text-xs font-bold tracking-widest">PROTO_ETH</span>
+                        <span class="text-xs font-mono">$1.42B</span>
+                        <span class="text-xs text-green-500 font-mono">+4.18% ↑</span>
+                        <div class="text-right"><span class="label-tag border-green-900 text-green-500">STABLE</span></div>
+                    </div>
+                </div>
+                <div class="group border-b border-gray-900 py-4 hover:bg-white/5 transition-all cursor-crosshair px-2">
+                    <div class="grid grid-cols-4 items-center">
+                        <span class="text-xs font-bold tracking-widest">PROTO_SOL</span>
+                        <span class="text-xs font-mono">$892.4M</span>
+                        <span class="text-xs text-red-500 font-mono">-2.41% ↓</span>
+                        <div class="text-right"><span class="label-tag border-yellow-900 text-yellow-500">VOLATILE</span></div>
+                    </div>
+                </div>
+                <div class="group border-b border-gray-900 py-4 hover:bg-white/5 transition-all cursor-crosshair px-2">
+                    <div class="grid grid-cols-4 items-center">
+                        <span class="text-xs font-bold tracking-widest">PROTO_BASE</span>
+                        <span class="text-xs font-mono">$112.9M</span>
+                        <span class="text-xs text-blue-500 font-mono">+12.4% ↑</span>
+                        <div class="text-right"><span class="label-tag border-blue-900 text-blue-400">GROWTH</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-20 p-6 bg-blue-500/5 border border-blue-500/10">
+                <h4 class="text-[10px] font-bold text-blue-500 mb-4">// AGENT_SYSTEM_LOG</h4>
+                <p class="text-[11px] text-gray-500 font-mono leading-relaxed">
+                    AI Agent has detected a 400% increase in 'Smart Money' accumulation on L2 assets. 
+                    Targeting 14 dormant whale wallets reactivating within current block.
+                </p>
+                <button class="mt-6 w-full text-center py-3 text-[10px] font-bold bg-white text-black hover:bg-blue-500 hover:text-white transition">
+                    VIEW_COMPLETE_FORENSIC_REPORT
                 </button>
             </div>
         </section>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            
-            <aside class="lg:col-span-4 space-y-6">
-                <div class="terminal-border p-4 bg-[#0a0a0a] h-[400px] flex flex-col">
-                    <div class="flex justify-between items-center border-b border-gray-900 pb-2 mb-4">
-                        <span class="text-[10px] font-bold">LIVE_TELEMETRY</span>
-                        <div class="status-dot"></div>
-                    </div>
-                    <div id="feed" class="text-[10px] font-mono space-y-2 overflow-y-auto">
-                        <div class="text-gray-500">[INIT] DATA_NODE_SYNC... COMPLETE</div>
-                        <div class="text-blue-400">[SCAN] IDENTIFYING_WHALE_FLOWS (ETH_MAINNET)</div>
-                        <div class="text-white">> 0x4f...21 MOVED 4,200 ETH TO COINBASE</div>
-                        <div class="text-red-500">[ALERT] HIGH_VOLATILITY_DETECTED: $PEPE</div>
-                    </div>
-                </div>
-
-                <div class="terminal-border p-4 bg-blue-500/5">
-                    <h4 class="text-xs font-bold mb-2 text-blue-400">// NETWORK_HEALTH</h4>
-                    <div class="space-y-2">
-                        <div class="flex justify-between text-[10px]">
-                            <span>ETH_INDEX_LOAD</span>
-                            <span class="text-blue-500">68%</span>
-                        </div>
-                        <div class="w-full bg-gray-900 h-1">
-                            <div class="bg-blue-500 h-1" style="width: 68%"></div>
-                        </div>
-                    </div>
-                </div>
-            </aside>
-
-            <section class="lg:col-span-8 terminal-border p-6 bg-[#0a0a0a]">
-                <div class="flex justify-between items-center mb-8 border-b border-gray-900 pb-4">
-                    <div>
-                        <h2 class="text-lg font-bold">CORE_ANALYSIS_ARRAY</h2>
-                        <p class="text-[10px] text-gray-600 uppercase">Cross-chain data visualization // Node: Global</p>
-                    </div>
-                    <div class="flex gap-2">
-                        <button class="label-tag hover:text-white border-blue-900 text-blue-400">SAVE_JSON</button>
-                        <button class="label-tag hover:text-white">REFRESH_NODE</button>
-                    </div>
-                </div>
-
-                <div class="space-y-4">
-                    <div class="grid grid-cols-4 text-[10px] text-gray-600 font-bold mb-2 uppercase tracking-widest">
-                        <span>Identifier</span>
-                        <span>Weight</span>
-                        <span>Momentum</span>
-                        <span class="text-right">Risk_Score</span>
-                    </div>
-                    
-                    <div class="group border-b border-gray-900 py-3 hover:bg-white/5 transition px-2">
-                        <div class="grid grid-cols-4 items-center">
-                            <span class="text-xs font-bold">PROTO_BTC</span>
-                            <span class="text-xs">42.85G</span>
-                            <span class="text-xs text-green-500">+4.2% ↑</span>
-                            <div class="text-right">
-                                <span class="bg-green-500/10 text-green-500 px-2 py-1 text-[9px] border border-green-500/20">LOW</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="group border-b border-gray-900 py-3 hover:bg-white/5 transition px-2">
-                        <div class="grid grid-cols-4 items-center">
-                            <span class="text-xs font-bold">PROTO_SOL</span>
-                            <span class="text-xs">12.11G</span>
-                            <span class="text-xs text-red-500">-1.8% ↓</span>
-                            <div class="text-right">
-                                <span class="bg-yellow-500/10 text-yellow-500 px-2 py-1 text-[9px] border border-yellow-500/20">MODERATE</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="group border-b border-gray-900 py-3 hover:bg-white/5 transition px-2">
-                        <div class="grid grid-cols-4 items-center">
-                            <span class="text-xs font-bold">AGENT_X_WHALE</span>
-                            <span class="text-xs">9.04G</span>
-                            <span class="text-xs text-blue-500">STABLE</span>
-                            <div class="text-right">
-                                <span class="bg-blue-500/10 text-blue-400 px-2 py-1 text-[9px] border border-blue-400/20">SECURE</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-12 p-4 border-t border-gray-900 flex justify-between">
-                    <div class="text-[9px] text-gray-600">
-                        AUTH_STATE: <span class="text-gray-400">GUEST_USER_092</span><br>
-                        PERMISSIONS: <span class="text-gray-400">READ_ONLY</span>
-                    </div>
-                    <button class="bg-white text-black px-4 py-2 text-[10px] font-bold hover:bg-blue-500 hover:text-white transition">
-                        UPGRADE_TO_FOUNDER_LEVEL
-                    </button>
-                </div>
-            </section>
-        </div>
     </main>
 
-    <footer class="mt-12 pt-8 border-t border-gray-900 text-[9px] text-gray-600 flex flex-col md:flex-row justify-between items-center uppercase tracking-[0.2em] gap-4">
-        <div>© 2026 BLOCKCHAIN_ANALYTICS // ALL_SYSTEMS_GO</div>
-        <div class="flex gap-8">
-            <a href="#" class="hover:text-white transition">X_PROTO</a>
-            <a href="#" class="hover:text-white transition">DISC_CORE</a>
-            <a href="#" class="hover:text-white transition">GITHUB_REVERSE</a>
+    <footer class="mt-24 border-t border-gray-900 bg-[#050505]">
+        <div class="border-b border-gray-900 py-2 overflow-hidden whitespace-nowrap">
+            <div class="flex animate-scroll text-[9px] font-mono text-gray-600 space-x-12 uppercase tracking-widest">
+                <span>[STABLE] NET_SYNC_OK</span>
+                <span class="text-blue-500">[INFO] 4,200 ETH MOVED TO COLD_STORAGE</span>
+                <span>[SCAN] MEV_BOT_0x82... BLOCKED</span>
+                <span class="text-green-500">[ALERT] HIGH_APY_OPPORTUNITY: LIDO_RETAKE</span>
+                <span>[INFO] INDEXING_BLOCK_#19284755</span>
+                <span>[STABLE] NET_SYNC_OK</span>
+            </div>
         </div>
-        <div>LOC: IRVINE_CA // 33.6846° N, 117.8265° W</div>
+
+        <div class="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-12">
+            <div class="md:col-span-2 space-y-6">
+                <h3 class="text-sm font-bold tracking-tighter">BLOCKCHAIN_ANALYTICS // V4.0</h3>
+                <p class="text-[11px] text-gray-600 leading-relaxed max-w-xs">
+                    Deterministic truth for a probabilistic market. Powered by a decentralized node network and proprietary AI forensic protocols.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-xs border border-gray-800 p-2 hover:border-blue-500 transition"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" class="text-xs border border-gray-800 p-2 hover:border-blue-500 transition"><i class="fa-brands fa-discord"></i></a>
+                    <a href="#" class="text-xs border border-gray-800 p-2 hover:border-blue-500 transition"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <h5 class="text-[10px] font-bold text-gray-500 tracking-widest">// CORE_PROTOCOLS</h5>
+                <ul class="text-[11px] space-y-2 text-gray-700">
+                    <li><a href="#" class="hover:text-white transition">WHALE_TRACKER</a></li>
+                    <li><a href="#" class="hover:text-white transition">RUG_DETECTOR</a></li>
+                    <li><a href="#" class="hover:text-white transition">SMART_CLUSTERS</a></li>
+                    <li><a href="#" class="hover:text-white transition">NODE_EXPLORER</a></li>
+                </ul>
+            </div>
+
+            <div class="space-y-4">
+                <h5 class="text-[10px] font-bold text-gray-500 tracking-widest">// NETWORK</h5>
+                <ul class="text-[11px] space-y-2 text-gray-700">
+                    <li><a href="#" class="hover:text-white transition">ETHEREUM_L1</a></li>
+                    <li><a href="#" class="hover:text-white transition">SOLANA_RPC</a></li>
+                    <li><a href="#" class="hover:text-white transition">BASE_L2</a></li>
+                    <li><a href="#" class="hover:text-white transition">ARBITRUM_ONE</a></li>
+                </ul>
+            </div>
+
+            <div class="md:col-span-2 lg:col-span-2 bg-gray-900/20 p-6 border border-gray-900 flex flex-col justify-between">
+                <div>
+                    <h5 class="text-[10px] font-bold text-blue-500 mb-4">// SYSTEM_DIAGNOSTICS</h5>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <span class="text-[9px] text-gray-700 block uppercase font-bold">Indexed Data</span>
+                            <span class="text-sm font-mono tracking-tighter">4.82 PB</span>
+                        </div>
+                        <div class="space-y-1">
+                            <span class="text-[9px] text-gray-700 block uppercase font-bold">Labels</span>
+                            <span class="text-sm font-mono tracking-tighter">12.4M</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="mt-6 py-3 text-[10px] font-bold border border-yellow-500/30 text-yellow-500 hover:bg-yellow-500 hover:text-black transition">
+                    SECURE_FOUNDER_KEY
+                </button>
+            </div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-6 py-8 border-t border-gray-900 flex flex-col md:flex-row justify-between items-center text-[9px] text-gray-600 gap-4 tracking-widest">
+            <div>LOC: IRVINE_CA // 33.6846° N, 117.8265° W // © 2026</div>
+            <div class="flex space-x-8">
+                <a href="#" class="hover:text-white transition">PRIVACY_POLICY</a>
+                <a href="#" class="hover:text-white transition">TERMS_OF_SERVICE</a>
+                <a href="#" class="hover:text-white transition">API_STATUS</a>
+            </div>
+        </div>
     </footer>
 
     <script>
-        // Update System Clock
+        // System Clock
         function updateClock() {
             const now = new Date();
-            const time = now.getHours().toString().padStart(2, '0') + ":" + 
+            document.getElementById('clock').innerText = now.getHours().toString().padStart(2, '0') + ":" + 
                          now.getMinutes().toString().padStart(2, '0') + ":" + 
                          now.getSeconds().toString().padStart(2, '0');
-            document.getElementById('clock').innerText = time;
         }
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Simulate Live Data Feed
+        // Feed Logic
         const feed = document.getElementById('feed');
-        const logEntries = [
-            "[INFO] SYNCING_BLOCK_#194827...",
-            "[WARN] ANOMALY_DETECTED_IN_CLUSTER_C4",
+        const logs = [
+            "[INFO] SCANNING_BLOCK_#1928374...",
+            "[WARN] ANOMALY_DETECTED_IN_CLUSTER_7",
             "[SUCCESS] PROTOCOL_SCAN_COMPLETE",
-            "[DATA] NEW_WALLET_LABELED: 'KRAKEN_HOT_2'",
-            "[CMD] EXECUTING_WHALE_TRACE..."
+            "[LABEL] NEW_WALLET: 'BINANCE_HOT_6'",
+            "[CMD] EXECUTING_WHALE_TRACE_ETH",
+            "[DATA] LIQUIDITY_REMOVED_CA_0x8b...",
+            "[SMART] ALPHA_WALLET_BUY_DETECTED"
         ];
-
         setInterval(() => {
             const entry = document.createElement('div');
-            entry.className = "text-gray-600 opacity-0 transition-opacity duration-300";
-            entry.innerText = logEntries[Math.floor(Math.random() * logEntries.length)];
+            entry.className = "text-gray-500 hover:text-white transition cursor-default";
+            entry.innerText = logs[Math.floor(Math.random() * logs.length)];
             feed.prepend(entry);
-            setTimeout(() => entry.classList.remove('opacity-0'), 50);
-            if (feed.children.length > 20) feed.lastChild.remove();
-        }, 2500);
+            if(feed.children.length > 25) feed.lastChild.remove();
+        }, 2000);
 
+        function setQuery(q) { document.getElementById('ai-input').value = q; }
         function simulateSearch() {
             const val = document.getElementById('ai-input').value;
             if(!val) return;
-            alert("COMMAND_EXECUTED: Analyzing " + val + "... Access the full terminal result by connecting your Founder Key.");
+            alert("SYS_CMD: Initiating Agentic Analysis on [" + val + "]... Node sync required.");
         }
     </script>
 </body>
